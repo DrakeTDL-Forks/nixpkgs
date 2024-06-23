@@ -6,8 +6,9 @@
   fetchFromGitHub,
   fetchYarnDeps,
   mkYarnPackage,
+  nixosTests,
   stdenv,
-  testVersion,
+  testers,
 }:
 let
   inherit (lib.importJSON ./version.json)
@@ -135,7 +136,8 @@ in
         updateScript = ./update.nu;
 
         tests = {
-          version = testVersion {
+          stash = nixosTests.stash;
+          version = testers.testVersion {
             package = final.finalPackage;
             version = "v${version} (${gitHash}) - Official Build - ${stamp}";
           };
